@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="gruvbox">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Online Typing Test - MonkeyType Style Speed Test | Monkey Typing</title>
+  <meta name="description" content="Monkey Typing is a free online typing practice tool. Improve your typing speed and accuracy with WPM tests, random sentences, multiple modes and themes. A monkeytype-style typing test for learning to type faster.">
+  <meta name="keywords" content="typing test, online typing test, wpm test, typing speed test, monkeytype, keyboard practice, typing practice, free typing test">
+  <meta name="robots" content="index, follow">
+  <meta name="application-name" content="Monkey Typing">
+  <meta name="theme-color" content="#e2b714">
+  <link rel="canonical" href="https://monkeytyping.app/">
+  <meta property="og:title" content="Free Online Typing Test - Typing Speed Practice">
+  <meta property="og:description" content="Practice typing with random sentences. Track WPM, accuracy and more. Free, no signup.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://monkeytyping.app/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Online Typing Test">
+  <meta name="twitter:description" content="Practice typing with random sentences. Track WPM, accuracy and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Monkey Typing",
+    "alternateName": ["MonkeyType", "Monkey Type", "Monkey Typing Test", "Typing Practice Tool"],
+    "description": "Free online typing practice tool. Improve typing speed and accuracy with WPM tests, random sentences, multiple modes and themes. A monkeytype-style typing test for learning to type faster.",
+    "applicationCategory": "EducationalApplication",
+    "applicationSubCategory": "TypingPractice",
+    "educationalUse": "Typing practice and learning",
+    "audience": { "@type": "Audience", "audienceType": "Students, professionals, and anyone learning to type" },
+    "featureList": "WPM test, accuracy tracking, multiple modes, themes, custom sentences, bubble typing game",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><img src="favicon.svg" alt="Monkey Typing" width="24" height="24" style="vertical-align:middle;margin-right:.4rem">Monkey Typing</div>
+        <nav>
+      <a href="index.html" class="active">Test</a>
+      <a href="bubble.html">Bubble</a>
+      <button id="settingsBtn" type="button">Settings</button>
+    </nav>
+  </header>
+
+  <main class="test-page">
+    <div class="live-stats">
+      <div class="stat"><span class="stat-val" id="wpm">0</span><span class="stat-label">wpm</span></div>
+      <div class="stat"><span class="stat-val" id="acc">100%</span><span class="stat-label">acc</span></div>
+      <div class="stat"><span class="stat-val" id="timer">30</span><span class="stat-label" id="timerLabel">time</span></div>
+    </div>
+
+    <div class="words-wrapper" id="wordsWrapper">
+      <div class="words" id="words"></div>
+    </div>
+
+    <div class="test-controls">
+      <div class="mode-bar">
+        <div class="mode-group" id="modeGroup">
+          <button class="mode-btn" data-mode="time">time</button>
+          <button class="mode-btn" data-mode="words">words</button>
+          <button class="mode-btn" data-mode="sentence">sentence</button>
+        </div>
+        <div class="mode-group" id="timeOptions">
+          <button class="mode-btn" data-time="15">15</button>
+          <button class="mode-btn active" data-time="30">30</button>
+          <button class="mode-btn" data-time="60">60</button>
+          <button class="mode-btn" data-time="120">120</button>
+        </div>
+        <div class="mode-group" id="wordsOptions" style="display:none">
+          <button class="mode-btn" data-words="10">10</button>
+          <button class="mode-btn active" data-words="25">25</button>
+          <button class="mode-btn" data-words="50">50</button>
+          <button class="mode-btn" data-words="100">100</button>
+        </div>
+      </div>
+      <div class="toggle-row">
+        <label class="toggle"><input type="checkbox" id="punctToggleTop"> punctuation</label>
+        <label class="toggle"><input type="checkbox" id="numbersToggleTop"> numbers</label>
+      </div>
+    </div>
+
+    <p class="hint">Tab - restart &nbsp;|&nbsp; click text to focus</p>
+  </main>
+
+  <!-- Settings modal -->
+  <div class="modal-overlay" id="settingsOverlay">
+    <div class="modal" id="settingsModal">
+      <h2>settings</h2>
+      <div class="row">
+        <label>theme</label>
+        <select id="themeSelect">
+          <option value="dark">dark</option>
+          <option value="light">light</option>
+          <option value="serika">serika</option>
+          <option value="nord">nord</option>
+          <option value="dracula">dracula</option>
+          <option value="gruvbox">gruvbox</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>font size</label>
+        <input type="range" id="fontSizeRange" min="1" max="2.4" step="0.1" value="1.6">
+        <span id="fontSizeVal">1.6</span>
+      </div>
+      <div class="row">
+        <label>sound</label>
+        <input type="checkbox" id="soundToggle">
+      </div>
+      <div class="row">
+        <label>punctuation</label>
+        <input type="checkbox" id="punctToggle">
+      </div>
+      <div class="row">
+        <label>numbers</label>
+        <input type="checkbox" id="numbersToggle">
+      </div>
+      <div class="row">
+        <label>mode</label>
+        <select id="modeSelect">
+          <option value="time">time</option>
+          <option value="words">words</option>
+          <option value="sentence">sentence</option>
+        </select>
+      </div>
+      <div class="row" id="timeOptionsModal">
+        <label>time</label>
+        <select id="timeSelect">
+          <option value="15">15</option>
+          <option value="30">30</option>
+          <option value="60">60</option>
+          <option value="120">120</option>
+        </select>
+      </div>
+      <div class="row" id="wordsOptionsModal" style="display:none">
+        <label>words</label>
+        <select id="wordsSelect">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <div class="row">
+        <button id="applySettings" type="button">apply</button>
+        <button class="secondary" type="button" onclick="window.closeSettingsModal && window.closeSettingsModal()">cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results modal -->
+  <div class="modal-overlay" id="resultsOverlay">
+    <div class="modal" id="resultsModal">
+      <h2>results</h2>
+      <div class="results-grid">
+        <div class="result-item"><div class="val" id="resWpm">0</div><div class="lbl">wpm</div></div>
+        <div class="result-item"><div class="val" id="resRaw">0</div><div class="lbl">raw</div></div>
+        <div class="result-item"><div class="val" id="resAcc">0%</div><div class="lbl">accuracy</div></div>
+        <div class="result-item"><div class="val" id="resCorrect">0</div><div class="lbl">correct</div></div>
+        <div class="result-item"><div class="val" id="resIncorrect">0</div><div class="lbl">incorrect</div></div>
+        <div class="result-item"><div class="val" id="resExtra">0</div><div class="lbl">extra</div></div>
+        <div class="result-item"><div class="val" id="resMissed">0</div><div class="lbl">missed</div></div>
+        <div class="result-item"><div class="val" id="resTime">0s</div><div class="lbl">time</div></div>
+      </div>
+      <canvas id="resultsChart" class="results-chart"></canvas>
+      <div class="row">
+        <button id="restartBtn" type="button">restart (Tab)</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="seo-content" style="width:100%;max-width:900px;padding:2rem;margin-top:60vh;color:var(--text-alt);font-size:.9rem;line-height:1.6">
+    <h1 style="color:var(--main);font-size:1.4rem">Free Online Typing Test - Monkey Typing</h1>
+    <p>If you are looking for a monkeytype style typing test, this monkey typing test is built for you. Monkey typer fans and monkeytype users love our free typing test because it feels like monkeytype.com while staying lightweight. Whether you search monkey type, monkeytype typing, money type, type monkey, typemonkey or monky typing, you land here. This monkey keyboard trainer works as a type test, typing test and wpm test in one place. Try a monkeytype free typing test right now, no signup, no paywall.</p>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">What is WPM?</h2>
+    <p>Words per minute (WPM) measures how many words you can type in one minute. A "word" is standardized to five characters, so WPM = (correct characters / 5) / minutes. Raw WPM counts all typed characters including mistakes, while net WPM only counts correct ones. Accuracy is the percentage of correctly typed characters. Many users ask "wpm monkeytype typing test" or "typing monkey wpm test"; our wpm test reports both net and raw values like monkeytype typing.</p>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">How it works</h2>
+    <p>Start typing and the timer begins automatically. Each character is checked against the target sentence and highlighted for correct or incorrect input. Press Tab to restart at any time. When the test ends, a results screen shows your WPM, raw WPM, accuracy, and a WPM-over-time chart so you can track your progress. Type monkey and watch your speed grow; type test sessions are short and addictive like monkeytype test rounds.</p>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">Modes</h2>
+    <ul style="padding-left:1.2rem">
+      <li><strong>Time mode:</strong> 15, 30, 60 or 120 seconds. Type as many words as you can before time runs out, like a monkeytype typing sprint.</li>
+      <li><strong>Words mode:</strong> 10, 25, 50 or 100 words. Finish the set as fast and accurately as possible.</li>
+      <li><strong>Sentence mode:</strong> type a single randomly chosen sentence, perfect for monkey typing practice.</li>
+    </ul>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">Features</h2>
+    <ul style="padding-left:1.2rem">
+      <li>Random sentences from a large, editable list stored in sentences.txt.</li>
+      <li>Customizable themes, font size, sound, and punctuation/numbers toggles.</li>
+      <li>Results with detailed stats and a WPM history chart.</li>
+      <li>Bubble typing game for fun practice.</li>
+      <li>100% client-side: no signup, no backend, works offline.</li>
+      <li>Custom sentences: edit sentences.txt and redeploy to change the pool.</li>
+    </ul>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">Tips to improve typing speed</h2>
+    <p>Focus on accuracy first; speed follows naturally. Keep your fingers on the home row, use all fingers, and avoid looking at the keyboard. Practice daily in short sessions and gradually increase difficulty. Aim for 95%+ accuracy before pushing for higher WPM. Monkey typing rewards consistency, so type monkey drills every day.</p>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">Frequently asked questions</h2>
+    <p><strong>Is it free?</strong> Yes, completely free with no signup, a monkeytype free typing test alternative.</p>
+    <p><strong>Does it work offline?</strong> Yes, once loaded it works without an internet connection.</p>
+    <p><strong>How are sentences chosen?</strong> Randomly from sentences.txt; you can edit that file to add your own.</p>
+    <p><strong>Is my data stored?</strong> Settings and high scores are stored locally in your browser only.</p>
+    <p><strong>Is this monkeytype?</strong> It is an independent monkey type inspired typing test, not affiliated with monkeytype.com.</p>
+
+    <p style="margin-top:1rem;color:var(--sub);font-size:.8rem">&copy; Monkey Typing. Free online typing practice. monkeytyper monkeytpe monkeytype test monkeytype free typing test monkey keyboard monkey typer moneytype money type type monkey typemonkey type monkey typing test monkeytype.com monkeytype typing monkey type test wpm monkeytype typing test typing monkey wpm test monkey typing test type test type monkey typing monkey monkey type typing test</p>
+  </section>
+
+  <footer style="width:100%;max-width:1100px;padding:1.5rem 2rem;color:var(--sub);font-size:.8rem;text-align:center;border-top:1px solid var(--sub-alt);margin-top:2rem">
+    <a href="index.html" style="color:var(--sub);margin:0 .5rem">Home</a>
+    <a href="bubble.html" style="color:var(--sub);margin:0 .5rem">Bubble Game</a>
+    <a href="about.html" style="color:var(--sub);margin:0 .5rem">About</a>
+    <a href="privacy.html" style="color:var(--sub);margin:0 .5rem">Privacy Policy</a>
+    <a href="cookies.html" style="color:var(--sub);margin:0 .5rem">Cookie Policy</a>
+    <a href="terms.html" style="color:var(--sub);margin:0 .5rem">Terms</a>
+    <a href="contact.html" style="color:var(--sub);margin:0 .5rem">Contact</a>
+    <div style="margin-top:.5rem">&copy; Typing. All rights reserved.</div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // sync top toggles with state after app init
+    (function () {
+      function syncTop() {
+        const punct = document.getElementById('punctToggleTop');
+        const nums = document.getElementById('numbersToggleTop');
+        if (!punct || !nums) return;
+        // read from settings via storage
+        const s = window.TypingStorage.loadSettings();
+        punct.checked = s.punctuation !== false;
+        nums.checked = !!s.numbers;
+        punct.addEventListener('change', function () {
+          const st = window.TypingStorage.loadSettings();
+          st.punctuation = punct.checked;
+          window.TypingStorage.saveSettings(st);
+          location.reload();
+        });
+        nums.addEventListener('change', function () {
+          const st = window.TypingStorage.loadSettings();
+          st.numbers = nums.checked;
+          window.TypingStorage.saveSettings(st);
+          location.reload();
+        });
+      }
+      setTimeout(syncTop, 100);
+
+      // mode buttons wiring (delegate to settings apply via reload for simplicity)
+      function bindModeButtons() {
+        document.querySelectorAll('[data-mode]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const st = window.TypingStorage.loadSettings();
+            st.mode = btn.getAttribute('data-mode');
+            window.TypingStorage.saveSettings(st);
+            location.reload();
+          });
+        });
+        document.querySelectorAll('[data-time]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const st = window.TypingStorage.loadSettings();
+            st.timeLimit = parseInt(btn.getAttribute('data-time'), 10);
+            window.TypingStorage.saveSettings(st);
+            location.reload();
+          });
+        });
+        document.querySelectorAll('[data-words]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const st = window.TypingStorage.loadSettings();
+            st.wordCount = parseInt(btn.getAttribute('data-words'), 10);
+            window.TypingStorage.saveSettings(st);
+            location.reload();
+          });
+        });
+      }
+      setTimeout(bindModeButtons, 100);
+
+      // reflect active states
+      setTimeout(function () {
+        const s = window.TypingStorage.loadSettings();
+        document.querySelectorAll('[data-mode]').forEach(function (b) {
+          b.classList.toggle('active', b.getAttribute('data-mode') === s.mode);
+        });
+        document.querySelectorAll('[data-time]').forEach(function (b) {
+          b.classList.toggle('active', parseInt(b.getAttribute('data-time'),10) === s.timeLimit);
+        });
+        document.querySelectorAll('[data-words]').forEach(function (b) {
+          b.classList.toggle('active', parseInt(b.getAttribute('data-words'),10) === s.wordCount);
+        });
+        const timeOpts = document.getElementById('timeOptions');
+        const wordsOpts = document.getElementById('wordsOptions');
+        if (timeOpts) timeOpts.style.display = s.mode === 'time' ? '' : 'none';
+        if (wordsOpts) wordsOpts.style.display = s.mode === 'words' ? '' : 'none';
+      }, 120);
+    })();
+  </script>
+</body>
+</html>

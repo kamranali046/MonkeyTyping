@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="gruvbox">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bubble Typing Game - Type Words in Bubbles | Monkey Typing</title>
+  <meta name="description" content="Monkey Typing bubble game: a free typing practice tool where words and letters float in bubbles. Type to burst and score. Choose words, letters or mixed mode, difficulty and timed or endless play.">
+  <meta name="keywords" content="bubble typing game, typing game, word game, typing practice game, keyboard game, free typing game">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://monkeytyping.app/bubble.html">
+  <meta property="og:title" content="Bubble Typing Game - Type to Burst">
+  <meta property="og:description" content="Words float in bubbles. Type them to burst and score. Multiple modes and difficulties.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bubble Typing Game">
+  <meta name="twitter:description" content="Words float in bubbles. Type them to burst and score.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Game",
+    "name": "Bubble Typing Game",
+    "description": "A typing game where words and letters float in bubbles. Type them to burst and score.",
+    "genre": "Educational",
+    "playMode": "SinglePlayer",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    .game-wrap { width: 100%; max-width: 900px; padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 1rem; align-items: center; }
+    .hud { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+    .hud .stat { text-align: center; }
+    .hud .val { font-size: 1.6rem; color: var(--main); font-weight: 700; }
+    .hud .lbl { font-size: 0.7rem; color: var(--sub); text-transform: uppercase; letter-spacing: 1px; }
+    #gameCanvas { background: var(--sub-alt); border: 1px solid var(--sub); border-radius: 12px; display: block; max-width: 100%; }
+    .input-display { font-size: 1.4rem; color: var(--main); min-height: 2rem; text-align: center; }
+    .overlay-screen { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; background: rgba(0,0,0,0.75); border-radius: 12px; z-index: 10; cursor: pointer; }
+    .canvas-holder { position: relative; }
+    .overlay-screen h2 { color: var(--main); font-size: 2rem; }
+    .overlay-screen p { color: var(--sub); }
+    .overlay-screen button { background: var(--main); color: var(--bg); border: none; border-radius: 6px; padding: 0.6rem 1.2rem; font-family: var(--font); font-weight: 700; cursor: pointer; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><img src="favicon.svg" alt="Monkey Typing" width="24" height="24" style="vertical-align:middle;margin-right:.4rem">Monkey Typing</div>
+        <nav>
+      <a href="index.html">Test</a>
+      <a href="bubble.html" class="active">Bubble</a>
+      <button id="settingsBtn" type="button" onclick="location.href='index.html'">Settings</button>
+    </nav>
+  </header>
+
+  <div class="game-wrap">
+    <div class="hud">
+      <div class="stat"><div class="val" id="score">0</div><div class="lbl">score</div></div>
+      <div class="stat"><div class="val" id="lives">3</div><div class="lbl">lives</div></div>
+      <div class="stat"><div class="val" id="level">1</div><div class="lbl">level</div></div>
+      <div class="stat"><div class="val" id="timeLeft">-</div><div class="lbl">time</div></div>
+      <div class="stat"><div class="val" id="highscore">0</div><div class="lbl">best</div></div>
+    </div>
+    <div class="canvas-holder">
+      <canvas id="gameCanvas" width="1000" height="600"></canvas>
+      <div class="overlay-screen" id="startScreen">
+        <h2>bubble typing</h2>
+        <p>Type the words in the bubbles before they escape!</p>
+        <p style="font-size:.85rem">Backspace to correct. Enter to start.</p>
+        <button id="startBtn" type="button">start</button>
+      </div>
+      <div class="overlay-screen hidden" id="gameOverScreen">
+        <h2>game over</h2>
+        <p id="finalScore">score: 0</p>
+        <button id="restartBtn" type="button">play again (Enter)</button>
+      </div>
+    </div>
+    <div class="control-bar" style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;align-items:center">
+      <div>
+        <label style="color:var(--sub);font-size:.8rem">mode</label><br>
+        <select id="modeSelect" style="background:var(--bg);color:var(--text);border:1px solid var(--sub);border-radius:6px;padding:.4rem .6rem;font-family:var(--font)">
+          <option value="words">words</option>
+          <option value="letters">letters</option>
+          <option value="mixed">mixed</option>
+        </select>
+      </div>
+      <div>
+        <label style="color:var(--sub);font-size:.8rem">duration</label><br>
+        <select id="durationSelect" style="background:var(--bg);color:var(--text);border:1px solid var(--sub);border-radius:6px;padding:.4rem .6rem;font-family:var(--font)">
+          <option value="30">30s</option>
+          <option value="60">60s</option>
+          <option value="120">120s</option>
+          <option value="0">endless</option>
+        </select>
+      </div>
+      <div>
+        <label style="color:var(--sub);font-size:.8rem">difficulty</label><br>
+        <select id="difficultySelect" style="background:var(--bg);color:var(--text);border:1px solid var(--sub);border-radius:6px;padding:.4rem .6rem;font-family:var(--font)">
+          <option value="easy">easy</option>
+          <option value="hard">hard</option>
+          <option value="pro">pro</option>
+        </select>
+      </div>
+      <div>
+        <label style="color:var(--sub);font-size:.8rem">lives</label><br>
+        <select id="livesSelect" style="background:var(--bg);color:var(--text);border:1px solid var(--sub);border-radius:6px;padding:.4rem .6rem;font-family:var(--font)">
+          <option value="auto">auto</option>
+          <option value="1">1</option>
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="0">unlimited</option>
+        </select>
+      </div>
+    </div>
+    <div class="input-display" id="inputDisplay"></div>
+    <p class="hint">Type a word to target a bubble. Backspace to correct. Esc to menu.</p>
+  </div>
+
+  <section class="seo-content" style="width:100%;max-width:900px;padding:2rem;margin-top:60vh;color:var(--text-alt);font-size:.9rem;line-height:1.6">
+    <h1 style="color:var(--main);font-size:1.4rem">Bubble Typing Game - Monkey Typing</h1>
+    <p>A fun typing game where words and letters float upward in colored bubbles. Type the word shown on a bubble to burst it and earn points. The longer the word, the more points you score. Miss a bubble and you lose a life. Great for warming up and improving reaction time. If you enjoy monkeytype, this bubble game gives a playful twist to typing practice, mixing monkey typing speed with visual tracking.</p>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">How to play</h2>
+    <p>Click start, then type the letters of any bubble. The game targets the bubble whose word matches what you type. Backspace corrects mistakes. Choose your mode (words, letters, or mixed), duration (30/60/120 seconds or endless) and difficulty (easy, hard, pro) before starting. You can also set a custom number of lives or unlimited. Monkey typer fans will recognize the familiar feel of monkeytype typing, but with bubbles.</p>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">Modes</h2>
+    <ul style="padding-left:1.2rem">
+      <li><strong>Words:</strong> full words from the sentence pool, like a monkeytype typing test.</li>
+      <li><strong>Letters:</strong> single letters for quick reflex training.</li>
+      <li><strong>Mixed:</strong> a blend of words and letters.</li>
+    </ul>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">Difficulty levels</h2>
+    <ul style="padding-left:1.2rem">
+      <li><strong>Easy:</strong> slower bubbles, more lives (5).</li>
+      <li><strong>Hard:</strong> balanced speed and 3 lives.</li>
+      <li><strong>Pro:</strong> fast bubbles, 1 life.</li>
+    </ul>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">Scoring</h2>
+    <p>Each burst bubble awards points equal to its length times ten. Longer words and higher difficulties yield more points. Your best score is saved locally. Type monkey drills here to improve both speed and accuracy, a perfect companion to the typing test.</p>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">Why play</h2>
+    <p>The bubble game trains quick recognition and typing accuracy in a playful way. It complements the typing test by adding speed pressure and visual tracking. High scores are saved locally in your browser. Whether you search bubble game, bubble typing game, monkey typing game, typing game, keyboard game, letter typing game, word bubble game, typing practice game, monkeytype game or monkey type game, you will enjoy this free bubble typing game.</p>
+
+    <h2 style="color:var(--main);font-size:1.15rem;margin-top:1rem">Frequently asked questions</h2>
+    <p><strong>Is it free?</strong> Yes, completely free, a monkeytype free typing test style experience.</p>
+    <p><strong>Does it work offline?</strong> Yes, once loaded.</p>
+    <p><strong>Are high scores saved?</strong> Yes, in your browser's localStorage.</p>
+    <p><strong>Is this monkeytype?</strong> It is an independent monkey type inspired game, not affiliated with monkeytype.com.</p>
+
+    <p style="margin-top:1rem;color:var(--sub);font-size:.8rem">&copy; Monkey Typing. Free online typing practice. monkeytyper monkeytpe monkeytype test monkeytype free typing test monkey keyboard monkey typer moneytype money type type monkey typemonkey type monkey typing test monkeytype.com monkeytype typing monkey type test wpm monkeytype typing test typing monkey wpm test monkey typing test type test type monkey typing monkey monkey type typing test bubble game bubble typing game monkey typing game typing game keyboard game letter typing game word bubble game typing practice game monkeytype game monkey type game</p>
+  </section>
+
+  <footer style="width:100%;max-width:1100px;padding:1.5rem 2rem;color:var(--sub);font-size:.8rem;text-align:center;border-top:1px solid var(--sub-alt);margin-top:2rem">
+    <a href="index.html" style="color:var(--sub);margin:0 .5rem">Home</a>
+    <a href="bubble.html" style="color:var(--sub);margin:0 .5rem">Bubble Game</a>
+    <a href="about.html" style="color:var(--sub);margin:0 .5rem">About</a>
+    <a href="privacy.html" style="color:var(--sub);margin:0 .5rem">Privacy Policy</a>
+    <a href="cookies.html" style="color:var(--sub);margin:0 .5rem">Cookie Policy</a>
+    <a href="terms.html" style="color:var(--sub);margin:0 .5rem">Terms</a>
+    <a href="contact.html" style="color:var(--sub);margin:0 .5rem">Contact</a>
+    <div style="margin-top:.5rem">&copy; Typing. All rights reserved.</div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/bubble.js"></script>
+</body>
+</html>

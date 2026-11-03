@@ -1,0 +1,11 @@
+{
+  "name": "Monkey Typing",
+  "short_name": "MonkeyTyping",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#323437",
+  "theme_color": "#e2b714",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
