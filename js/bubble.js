@@ -15,7 +15,7 @@
   const W = canvas.width, H = canvas.height;
 
   const MODE_KEY = 'bubble.mode.v1';
-  let gameMode = localStorage.getItem(MODE_KEY) || 'words';
+  let gameMode = localStorage.getItem(MODE_KEY) || 'letters';
   const DUR_KEY = 'bubble.duration.v1';
   let gameDuration = parseInt(localStorage.getItem(DUR_KEY) || '60', 10);
   const DIFF_KEY = 'bubble.difficulty.v1';
